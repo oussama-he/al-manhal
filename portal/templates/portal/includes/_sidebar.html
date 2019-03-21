@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="row profile">
+    <div class="col-md-3">
+      <div class="profile-sidebar sidebar">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="profile-usermenu">
+
+              <form action="" method="get" class="filter-form" id="js-filterTags">
+                <ul class="nav flex-column">
+                  <li class="active nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="fa fa-tags"></i>
+                      {#tags_form.filter_tags.label#}
+                      Mots Clés
+                    </a>
+                    {% for field in tags_form.visible_fields %}
+                    {{field}}
+                    {% endfor %}
+                  </li>
+
+                  <li class="active nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="fa fa-users"></i>
+                      {{filter_project_form.filter_projects.label}}
+                    </a>
+                    {% comment %}
+                    {% for choice_id, choice_label in filter_project_form.filter_projects.field.choices%}
+                    <label for="id_filter_projects_{{forloop.counter0}}">
+                      <input type="checkbox" name="filter_projects" value="{{choice_id}}" id="id_filter_projects_{{forloop.counter0}}"> {{choice_label}}
+                    </label>
+                    {%endfor %}
+                    {% endcomment %}
+
+                    {% for field in filter_project_form.visible_fields %}
+                    {{field}}
+                    {% endfor %}
+
+                  </li>
+                </ul>
+
+              </form>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

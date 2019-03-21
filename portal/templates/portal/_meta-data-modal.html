@@ -1,0 +1,114 @@
+<div class="modal fade" id="pubMeta" data-pub-id="{{resource.id}}">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Details sur Ressource </h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          {% if request.user == resource.user and request.resolver_match.kwargs.user == request.user.username %}
+          <button type="button" class="btn btn-link float-md-right" id="o-js-edit-pub-meta">
+            <span class="fa fa-pencil" style="color:#007bff !important"></span>
+            <span class="text-primary">Modifier</span>
+          </button>
+          {% endif %}
+        <br>
+        <form method="post" class="main-form needs-validation" id="edit-resource-form" novalidate>
+          {% csrf_token %}
+          {% include 'portal/includes/_form-header.html' with form=form %}
+
+          {% include 'portal/includes/_form-field.html' with field=form.title disable='true' %}
+          {% include 'portal/includes/_form-field.html' with field=form.project disable='true' %}
+          {% include 'portal/includes/_form-field.html' with field=form.source disable='true'%}
+          {% include 'portal/includes/_form-field.html' with field=form.source_url disable='true'%}
+          {% include 'portal/includes/_form-field.html' with field=form.content disable='false'%}
+          {% include 'portal/includes/_form-field.html' with field=form.tags disable='true'%}
+
+          <div id="accordionM" class="accordion">
+            <div class="card">
+              <div class="card-header o-bg-primary" id="headingOne">
+                <h5 class="mb-0">
+                  <button type="button" class="btn btn-link text-white" data-toggle="collapse" data-target="#collapseOneM" aria-expanded="true" aria-controls="collapseOneM">
+                    Informations de Base
+                  </button>
+                </h5>
+              </div>
+
+              <div id="collapseOneM" class="collapse show" aria-labelledby="headingOne">
+                <div class="card-body">
+                  {% include 'portal/includes/_form-field.html' with field=form.description disable='false'%}
+                  <div class="row">
+                    <div class="col-6">
+                      {% include 'portal/includes/_form-field.html' with field=form.subject disable='true'%}
+                    </div>
+                    <div class="col-6">
+                      {% include 'portal/includes/_form-field.html' with field=form.creator disable='true'%}
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-3">
+                      {% include 'portal/includes/_form-field.html' with field=form.language disable='true'%}
+                    </div>
+                    <div class="col-3">
+                      {% include 'portal/includes/_form-field.html' with field=form.format disable='true'%}
+                    </div>
+                    <div class="col-3">
+                      {% include 'portal/includes/_form-field.html' with field=form.date disable='true'%}
+                    </div>
+                    <div class="col-3">
+                      {% include 'portal/includes/_form-field.html' with field=form.type disable='true'%}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header o-bg-primary" id="headingTwo">
+                <h5 class="mb-0">
+                  <button type="button" class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseTwoM" aria-expanded="false"
+                          aria-controls="collapseTwoM">
+                    Informations Détaillées 1
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseTwoM" class="collapse" aria-labelledby="headingTwo">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-6">
+                      {% include 'portal/includes/_form-field.html' with field=form.contributor disable='true'%}
+                    </div>
+                    <div class="col-6">
+                      {% include 'portal/includes/_form-field.html' with field=form.publisher disable='true'%}
+                    </div>
+                  </div>
+
+                  {% include 'portal/includes/_form-field.html' with field=form.identifier disable='true'%}
+                  {% include 'portal/includes/_form-field.html' with field=form.relation disable='true'%}
+                  {% include 'portal/includes/_form-field.html' with field=form.coverage disable='true'%}
+
+                  {% include 'portal/includes/_form-field.html' with field=form.rights disable='false'%}
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="float-md-right">
+            {% if request.user == resource.user and request.resolver_match.kwargs.user == request.user.username %}
+            <button type="button" class="btn btn-link" data-dismiss="modal"><span class="text-danger">Fermer</span></button>
+            <button type="submit" class="btn btn-primary" id="o-js-submit-edit" disabled>Valider</button>
+            {% else %}
+            <button type="button" class="btn btn-link" data-dismiss="modal"><span class="text-danger">Fermer</span></button>
+            {% endif %}
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+

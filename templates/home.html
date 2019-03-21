@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{% static 'css/lib/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'css/lib/mdb.css' %}">
+  <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.css' %}">
+  <link rel="stylesheet" href="{% static 'portal/css/main.css' %}">
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <title>Title</title>
+  <style>
+.header{
+position: relative;
+background-image: url("{% static 'portal/img/home-bg1.jpg' %}");
+background-size: cover;
+background-position: center;
+}
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark primary-color">
+  <a class="navbar-brand" href="#">
+    <strong>AL-MANHAL</strong>
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-3" aria-controls="navbarSupportedContent-3"
+          aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent-3">
+    <ul class="navbar-nav mr-auto">
+    </ul>
+  </div>
+</nav>
+
+<header class="header">
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-7"></div>
+      <div class="col-md-4" style="margin-left:35px">
+        {% if not request.user.is_authenticated %}
+        <div style="margin-top:45px;">
+          <ul class="tabs">
+            <li class="active">
+              <a href="#singin" class="text-center text-uppercase">Se Connecter</a>
+            </li>
+            <li>
+              <a href="#signup" class="text-center text-uppercase">S'Inscrire</a>
+            </li>
+          </ul>
+          <div class="tabs-content">
+            <div class="tab-content active" id="singin">
+              <form method="post" id="js-sign-in-form" novalidate>
+                <p class="h4 text-center text-uppercase mb-4">Se Connecter</p>
+                {% csrf_token %}
+                {% include 'portal/includes/_form-header.html' with form=sign_in_form %}
+
+                {% include 'portal/includes/_form-field.html' with field=sign_in_form.username %}
+                {% include 'portal/includes/_form-field.html' with field=sign_in_form.password %}
+
+                <div class="text-center mt-4">
+                  <button class="btn btn-primary btn-block" type="submit" id="js-sign-in-submit">Se Connecter</button>
+                </div>
+              </form>
+            </div>
+            <div class="tab-content" id="signup">
+              <p class="h4 text-center text-uppercase">S'Inscrire</p>
+              <form  method="post" id="js-sign-up-form" novalidate>
+                {% csrf_token %}
+                {% include 'portal/includes/_form-header.html' with form=sign_up_form %}
+
+                {% include 'portal/includes/_form-field.html' with field=sign_up_form.username %}
+
+                {% include 'portal/includes/_form-field.html' with field=sign_up_form.email %}
+                {% include 'portal/includes/_form-field.html' with field=sign_up_form.first_name %}
+                {% include 'portal/includes/_form-field.html' with field=sign_up_form.last_name %}
+                {% include 'portal/includes/_form-field.html' with field=sign_up_form.password %}
+                {% include 'portal/includes/_form-field.html' with field=sign_up_form.confirm_password %}
+                <button class="btn btn-primary btn-block" type="submit" id="js-sign-up-submit">s'inscrire</button>
+              </form>
+
+
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</header>
+<script src="{% static 'js/lib/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/lib/popper.min.js' %}"></script>
+<script src="{% static 'js/lib/bootstrap.js' %}"></script>
+<script src="{% static 'js/lib/mdb.js' %}"></script>
+<script src="{% static 'portal/js/publication.js' %}"></script>
+<script>
+  $(document).ready(function(){
+ $('.header').height($(window).height());
+
+ $(".navbar a").click(function(){
+ 	$("body,html").animate({
+ 		scrollTop:$("#" + $(this).data('value')).offset().top
+ 	},1000)
+
+ })
+  jQuery(function ($) {
+      var afficherOnglet = function ($a, duration) {
+        if (duration === undefined) {
+          duration = 500;
+        }
+        var $li = $a.parent()
+        if ($li.hasClass('active')) {
+          return false
+        }
+        var $target = $($a.attr('href'))
+        console.log($target)
+        $li.siblings('.active').removeClass('active')
+        $li.addClass('active')
+
+        // $target.show()
+        // $target.siblings().hide()
+
+        // $target.slideDown(500)
+        // $target.siblings().slideUp(500)
+
+        // $target.fadeIn(500)
+        // $target.siblings().fadeOut(500)
+
+        $target.siblings(':visible').fadeOut(duration, function () {
+          $target.fadeIn(duration);
+        })
+      }
+
+      $('.tabs a').click(function (event) {
+        event.preventDefault();
+        var $a = afficherOnglet($(this));
+      })
+
+      var hash = window.location.hash
+      if (hash != "") {
+        var $a = $('.tabs a[href="' + hash + '"]')
+        if ($a.length > 0) {
+          afficherOnglet($a, 0)
+        }
+      }
+
+/*
+      var $ul = $('#users');
+      var $loader = $('<div>Loading</div>').appendTo($('<body>'))
+      $.get('https://jsonplaceholder.typicode.com/users', {}, function (date, statusText, jqXHR) {
+        date.forEach(function (user) {
+          var $li = $('<li>')
+          $li.text(user.name)
+          $ul.append($li)
+          // $li.appendTo($ul)
+        })
+      })
+        .fail(function () {
+          console.log('fail')
+        })
+        .always(function () {
+          console.log('always')
+        })
+        .done(function () {
+          console.log('done')
+        })
+*/
+    })
+
+})
+</script>
+</body>
+</html>

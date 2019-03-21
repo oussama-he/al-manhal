@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}Groups Management {% endblock title %}
+
+{% block sidebar %}
+  {% include 'accounts/_profile-sidebar.html' %}
+{% endblock sidebar %}
+
+{% block content %}
+
+<div class="row">
+<div class="col-md-8 mx-auto mb-4">
+        <h2>Mes Groupes</h2>
+          <h5>
+              <em>Groupe: Datawarehouse</em>
+            </h5>
+          <div class="row my-4 justify-content-center">
+              <section id="tabs">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-12" style="width:750px">
+                      <nav>
+                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                          <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home"
+                            aria-selected="true">Membres de groupe <span class="badge badge-default">5</span></a>
+                          <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile"
+                            aria-selected="false">Demande d'Affectation <span class="badge badge-default">3</span></a>
+                        </div>
+                      </nav>
+                      <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <table class="table">
+                                <tbody>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>
+                                      <div class="media o-user-avatar">
+                                        <a class="pull-left" href="#">
+                                          <img class="media-object dp img-circle" src="../img/user.png" style="width: 50px;height:50px;">
+                                        </a>
+                                        <div class="media-body" style="height:100%; margin: auto;padding-left:15px;">
+                                          <h6 class="media-heading">Oussama Heloulou</h6>
+                                          <h6>
+                                            <small>oussama.hel@gmail.com</small>
+                                          </h6>
+
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td>12/12/12</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>
+                                      <div class="media o-user-avatar">
+                                        <a class="pull-left" href="#">
+                                          <img class="media-object dp img-circle" src="../img/user.png" style="width: 50px;height:50px;">
+                                        </a>
+                                        <div class="media-body" style="height:100%; margin: auto;padding-left:15px;">
+                                          <h6 class="media-heading">Oussama Heloulou</h6>
+                                          <h6>
+                                            <small>oussama.hel@gmail.com</small>
+                                          </h6>
+
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td>12/12/12</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>
+                                      <div class="media o-user-avatar">
+                                        <a class="pull-left" href="#">
+                                          <img class="media-object dp img-circle" src="../img/user.png" style="width: 50px;height:50px;">
+                                        </a>
+                                        <div class="media-body" style="height:100%; margin: auto;padding-left:15px;">
+                                          <h6 class="media-heading">Oussama Heloulou</h6>
+                                          <h6>
+                                            <small>oussama.hel@gmail.com</small>
+                                          </h6>
+
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td>12/12/12</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                        </div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <table class="table">
+                                <tbody>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>
+                                      <div class="media o-user-avatar">
+                                        <a class="pull-left" href="#">
+                                          <img class="media-object dp img-circle" src="../img/user.png" style="width: 50px;height:50px;">
+                                        </a>
+                                        <div class="media-body" style="height:100%; margin: auto;padding-left:15px;">
+                                          <h6 class="media-heading">Oussama Heloulou</h6>
+                                          <h6>
+                                            <small>oussama.hel@gmail.com</small>
+                                          </h6>
+
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <button class="btn btn-default">
+                                        <i class="fa fa-check"></i> Accepter</button>
+                                      <button class="btn btn-danger">
+                                        <i class="fa fa-close"></i> Refuser</button>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>
+                                      <div class="media o-user-avatar">
+                                        <a class="pull-left" href="#">
+                                          <img class="media-object dp img-circle" src="../img/user.png" style="width: 50px;height:50px;">
+                                        </a>
+                                        <div class="media-body" style="height:100%; margin: auto;padding-left:15px;">
+                                          <h6 class="media-heading">Oussama Heloulou</h6>
+                                          <h6>
+                                            <small>oussama.hel@gmail.com</small>
+                                          </h6>
+
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <button class="btn btn-default">
+                                        <i class="fa fa-check"></i> Accepter</button>
+                                      <button class="btn btn-danger">
+                                        <i class="fa fa-close"></i> Refuser</button>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>
+                                      <div class="media o-user-avatar">
+                                        <a class="pull-left" href="#">
+                                          <img class="media-object dp img-circle" src="../img/user.png" style="width: 50px;height:50px;">
+                                        </a>
+                                        <div class="media-body" style="height:100%; margin: auto;padding-left:15px;">
+                                          <h6 class="media-heading">Oussama Heloulou</h6>
+                                          <h6>
+                                            <small>oussama.hel@gmail.com</small>
+                                          </h6>
+
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <button class="btn btn-default">
+                                        <i class="fa fa-check"></i> Accepter</button>
+                                      <button class="btn btn-danger">
+                                        <i class="fa fa-close"></i> Refuser</button>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                        </div>
+
+                    </div>
+
+                  </div>
+                </div>
+            </div>
+            </section>
+      </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% load widget_tweaks %}
+{% load form_tags %}
+
+<div class="md-form">
+  {%  if disable == 'true' %}
+  {% if field|field_type == "ClearableFileInput" %}
+    {% render_field field class=field|input_class disabled=true accept="application/pdf" %}
+  {% else %}
+    {% render_field field class=field|input_class disabled=true %}
+  {% endif %}
+  {% else %}
+  {% if field|field_type == "ClearableFileInput" %}
+    {% render_field field class=field|input_class accept="application/pdf" %}
+  {% else %}
+  {% render_field field class=field|input_class %}
+  {% endif %}
+  {% endif %}
+  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+  <small class="form-text text-muted">{{field.help_text}}</small>
+  {% for error in field.errors %}
+  <div class="invalid-feedback">{{ error }}</div>
+  {% endfor %}
+</div>

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile {% endblock title %}
+
+
+{% block sidebar %}
+{% include 'accounts/includes/_profile-sidebar.html' %}
+{% endblock sidebar %}
+{% block content %}
+<section class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <form action="." method="post" novalidate>
+        {% csrf_token %}
+
+        {% include 'accounts/form.html' with form=form %}
+        <div class="mt-4 col-2 float-right">
+          <button type="submit" class="btn btn-primary" style="font-size: 14px;font-weight: 500;padding: 10px;">Sauvgarder</button>
+        </div>
+      </form>
+
+      <!--
+      <ul id="tabsJustified" class="nav nav-tabs">
+        <li class="nav-item">
+          <a href="" data-target="#users" data-toggle="tab" class="nav-link small text-uppercase active">Info Personel</a>
+        </li>
+        <li class="nav-item">
+          <a href="" data-target="#publications" data-toggle="tab" class="nav-link small text-uppercase">Changer Mot de Passe</a>
+        </li>
+      </ul>
+      <br>
+      <div id="tabsJustifiedContent" class="tab-content">
+        <div id="users" class="tab-pane fade active show">
+        </div>
+      </div>
+      -->
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
+
+{% block internal_js %}
+document.getElementById('changeAvatar').onchange = function (event) {
+console.log(URL.createObjectURL(event.target.files[0]));
+$("img").attr('src', URL.createObjectURL(event.target.files[0]));
+$("#o-js-submitAvatar").css("display", "inline-block");
+};
+
+{% endblock internal_js %}

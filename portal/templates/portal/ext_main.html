@@ -1,0 +1,175 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/lib/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'css/lib/mdb.css' %}">
+  <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.css' %}">
+  <link rel="stylesheet" href="{% static 'portal/css/main.css' %}">
+  <title>Document</title>
+</head>
+
+<body style="background-color:white;">
+<div class="card js-main">
+  <div class="card-header o-bg-primary">
+    Featured
+  </div>
+  <div class="card-body">
+    <h5 class="card-title js-add-resource"><i class="fa fa-bookmark"> </i> Ajouter une ressource</h5>
+    <h5 class="card-title"><i class="fa fa-upload"> </i> Charger un PDF</h5>
+    <h5 class="card-title"><i class="fa fa-home"> </i> Visiter le portail</h5>
+  </div>
+</div>
+
+<div class="js-sharing" style="display:none">
+
+  <form method="post" class="main-form needs-validation" id="new-resource-form" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {% include 'portal/includes/_form-header.html' with form=form %}
+
+    {% include 'portal/includes/_form-field.html' with field=form.title disable='false' %}
+    {% include 'portal/includes/_form-field.html' with field=form.project disable='false' %}
+    {% include 'portal/includes/_form-field.html' with field=form.source_url disable='false' %}
+
+    {% include 'portal/includes/_form-field.html' with field=form.content disable='false'%}
+    {% include 'portal/includes/_form-field.html' with field=form.tags disable='false'%}
+
+    <div id="accordion" class="accordion">
+      <div class="card">
+        <div class="card-header o-bg-primary" id="headingOne">
+          <h5 class="mb-0">
+            <button type="button" class="btn btn-link text-white" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Information de Base
+            </button>
+          </h5>
+        </div>
+
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+          <div class="card-body">
+            {% include 'portal/includes/_form-field.html' with field=form.description disable='false'%}
+            {% include 'portal/includes/_form-field.html' with field=form.date disable='false'%}
+            {% include 'portal/includes/_form-field.html' with field=form.creator disable='false'%}
+            {% include 'portal/includes/_form-field.html' with field=form.subject disable='false'%}
+
+            <div class="row">
+              <div class="col-6">
+                {% include 'portal/includes/_form-field.html' with field=form.language disable='false'%}
+              </div>
+              <div class="col-6">
+                {% include 'portal/includes/_form-field.html' with field=form.format disable='false'%}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header o-bg-primary" id="headingTwo">
+          <h5 class="mb-0">
+            <button type="button" class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+                    aria-controls="collapseTwo">
+              Informations Détaillées 1
+              <i style="font-size:13px">Optional</i>
+            </button>
+          </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
+          <div class="card-body">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header o-bg-primary" id="headingThree">
+          <h5 class="mb-0">
+            <button type="button" class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
+                    aria-controls="collapseThree">
+              Informations Détaillées 2
+              <i style="font-size:13px">Optional</i>
+            </button>
+          </h5>
+        </div>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
+          <div class="card-body">
+            {% include 'portal/includes/_form-field.html' with field=form.contributor disable='false'%}
+            {% include 'portal/includes/_form-field.html' with field=form.identifier disable='false'%}
+            {% include 'portal/includes/_form-field.html' with field=form.publisher disable='false'%}
+            {% include 'portal/includes/_form-field.html' with field=form.relation disable='false'%}
+            {% include 'portal/includes/_form-field.html' with field=form.coverage disable='false'%}
+            {% include 'portal/includes/_form-field.html' with field=form.type disable='false'%}
+            {% include 'portal/includes/_form-field.html' with field=form.rights disable='false'%}
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="float-right">
+      <button type="submit" id="js-resource-submit" class="btn btn-primary" >Partager</button>
+    </div>
+  </form>
+</div>
+<script src="{% static 'js/lib/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/lib/popper.min.js' %}"></script>
+<script src="{% static 'js/lib/bootstrap.js' %}"></script>
+<script src="{% static 'js/lib/mdb.js' %}"></script>
+<script>
+        $(".js-add-resource").click(function (event) {
+            event.preventDefault();
+            $(".js-main").css("display", "none");
+            $(".js-sharing").css("display", "block");
+        })
+
+        $("#js-resource-submit").click(function (event) {
+          event.preventDefault();
+          console.log(">>>>>>>>>>>>>>>>", window.location);
+          $(".invalid-feedback").remove();
+          $(".invalid").removeClass('invalid');
+
+          createResource();
+
+        })
+
+          function createResource() {
+    console.log("create resource is working!");
+
+    var endpoint = "/portal/create-resource/" + "extension" + "/";
+    $.ajax({
+      url: endpoint ,
+      type: "POST", // http method
+      data: new FormData($('#new-resource-form')[0]),
+      cache: false,
+      contentType: false,
+      processData: false,
+      enctype: 'multipart/form-data',
+
+      // handle a successful response
+      success: function (response) {
+          alert("success");
+          $(".js-sharing").css("display", "none");
+          $(".js-main").css("display", "block");
+      },
+
+      error: function (xhr, errmsg, err) {
+        formErrors = JSON.parse(xhr.responseJSON);
+        for (var key in formErrors) {
+          var fieldId = "#id_" + key;
+          var errorContent = formErrors[key];
+          var errorMessage = errorContent[0]['message'];
+
+          var errorFeedback = $("<div class='invalid-feedback'>" + errorMessage + "</div>");
+          $(fieldId).addClass("invalid is-invalid");
+          $(fieldId).parent().append(errorFeedback);
+        }
+        console.log(xhr.status + ": " + xhr.responseText);
+      }
+    });
+  };
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<div class="card o-card-hover mb-4" data-pub-id="{{resource.id}}" data-action-source="profile">
+  <div class="card-body">
+    <h4 class="card-title float-left">{{resource.title}}</h4>
+    <h5 class="float-right">
+      {#  and request.resolver_match.kwargs.username == request.user.username #}
+      {% if request.user == resource.user %}
+      <a href="#" class="o-js-show-meta" data-user="{{request.user.username}}">
+        <span class="fa fa-pencil grow" data-toggle="tooltip" data-placement="top" title="Modifier"> </span>
+      </a>
+      <a href="#" class="o-js-pub-actions o-js-archive-pub">
+        <span class="fa fa-archive grow" data-toggle="tooltip" data-placement="top"
+              title="Archiver"> </span>
+      </a>
+      {% else %}
+      <a href="#" class="o-js-show-meta" data-user="{{request.user.username}}">
+        <span class="fa fa-info-circle grow" data-toggle="tooltip" data-placement="top"
+              title="Ressource Details"> </span>
+      </a>
+      {% endif %}
+
+      {% if request.user.is_superuser %}
+      <a href="#" class="">
+        <span class="fa fa-trash text-danger grow" data-toggle="tooltip" data-placement="top"
+              title="Supprimer la ressource"> </span>
+      </a>
+      {% endif %}
+    </h5>
+    <br><br>
+    <span class="fa fa-users o-info" data-toggle="tooltip" data-placement="top" title="{{resource.project.title}}"> {{resource.project.title|truncatechars:65}} </span>
+    <span class="fa fa-calendar o-info" data-toggle="tooltip" data-placement="top" title="date de publication"> {{resource.created_at|date:"M Y"}} </span>
+
+    <p class="font-weight-normal text-muted">{{resource.content|truncatewords:50}}</p>
+    <hr>
+    <h5 class="float-right">
+      <span class="fa fa-comments o-info"> {{resource.comment_set.count}} </span>
+    </h5>
+  </div>
+</div>

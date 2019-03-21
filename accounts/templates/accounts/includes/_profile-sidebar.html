@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row profile">
+    <div class="col-md-3">
+      <div class="profile-sidebar sidebar">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="profile text-center">
+              <img src="{{ request.user.avatar.url }}" alt="" class="rounded-circle" style="width:120px;height:120px;margin-bottom:10px">
+              <form method="post" action="/accounts/change-avatar/" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if request.user == user and request.resolver_match.url_name == "edit-profile" %}
+                <button class="btn btn-link" onclick="document.querySelector('#changeAvatar').click(); return false" style="text-transform: initial;padding:0px">
+                  <i class="fa fa-edit"></i>
+                  Changer l'icon
+                </button>
+                {% endif %}
+                <div class="profile-usertitle">
+                  <div class="profile-usertitle-name">
+                    {{user.first_name|title}} {{user.last_name|title}}
+                  </div>
+                </div>
+                <button type="submit" id="o-js-submitAvatar" class="btn btn-primary" style="display:none;padding:5px 15px;text-transform:initial;">Valider</button>
+
+                <input type="file" id="changeAvatar" name="avatar" style="display:none;">
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="profile-usermenu">
+          <ul class="nav flex-column">
+            <li class="{% if request.resolver_match.url_name == 'overview' %}active{% endif%} nav-item">
+              <a href="{% url 'accounts:overview' request.user.username %}" class="nav-link">
+                <i class="fa fa-home"></i>
+                A propos
+              </a>
+            </li>
+            {% if request.user == user %}
+            <li class="{% if request.resolver_match.url_name == 'edit-profile' %}active{% endif%} nav-item">
+              <a href="{% url 'accounts:edit-profile' request.user.username %}" class="nav-link">
+                <i class="fa fa-user"></i>
+                Modifier profile
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+        <!-- END MENU -->
+      </div>
+    </div>
+  </div>
+</div>

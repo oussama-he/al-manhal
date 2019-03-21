@@ -1,0 +1,159 @@
+<div class="modal fade" id="projectConfigurationsModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Projet Details</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <section class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <ul id="tabsJustified" class="nav nav-tabs">
+                <li class="nav-item"><a href="" data-target="#description" data-toggle="tab" class="nav-link  text-uppercase active">Description</a></li>
+                <li class="nav-item"><a href="" data-target="#resourcesM" data-toggle="tab" class="nav-link  text-uppercase">Ressources</a></li>
+                <li class="nav-item"><a href="" data-target="#members" data-toggle="tab" class="nav-link  text-uppercase">Membres</a></li>
+              </ul>
+              <br>
+              <div id="tabsJustifiedContent" class="tab-content">
+                <div id="members" class="tab-pane fade">
+                  <div class="row">
+                    {% for member in members %}
+                    <div class="col-6">
+                      <div class="card mb-4">
+                        <img class="card-img-top" src="{{member.user.avatar.url}}" alt="avatar" style="width:100%;height:200px">
+                        <div class="card-body">
+                          <h5 class="card-title">
+                            <a href="{% url 'accounts:overview' member.user.username %}">
+                              {{member.user.first_name|title}} {{member.user.last_name|title}}
+                            </a>
+                            {% if request.user == project.created_by and request.resolver_match.kwargs.user == request.user.username %}
+                            {% if member.active %}
+                            <span class="fa fa-ban float-right text-danger grow js-block-member" data-toggle="tooltip" data-placement="top" title="Bloquer ce membre" data-member="{{member.user.username}}" data-member-status="{{member.active}}" style="font-size:18px"></span>
+                            {% else %}
+                            <span class="fa fa-check-circle-o float-right text-success grow js-block-member" data-toggle="tooltip" data-placement="top" title="Activer ce membre" data-member="{{member.user.username}}" data-member-status="{{member.active}}" style="font-size:18px"></span>
+                            {% endif %}
+                            {% endif %}
+                          </h5>
+                          <div class="clearfix"></div>
+                          <p class="text-muted">membre depuis {{member.user.date_joined|timesince}} </p>
+                          <div class="float-left">
+                            <p><span class="fa fa-bookmark text-muted" style="font-size: 20px"></span> {{member.resources_count}} <span class="text-muted">Ressources</span></p>
+                          </div>
+                          <div class="float-right">
+                            <p> <span class="fa fa-comments text-muted" style="font-size: 20px"></span> {{member.user.comment_set.count}} <span class="text-muted">Commentaires</span></p>
+                          </div>
+                          <div class="clearfix"></div>
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div id="resourcesM" class="tab-pane fade">
+                  {% for resource in resources %}
+                  <div class="card o-card-hover mb-4" data-pub-id="{{resource.id}}" data-action-source="profile">
+                    <div class="card-body">
+                      <h4 class="card-title float-left">{{resource.title}}</h4>
+                      <h5 class="float-right">
+                        {% if request.user == project.created_by and request.resolver_match.kwargs.user == request.user.username %}
+                        <a href="#" class="o-js-show-meta" data-user="{{request.user.username}}">
+                          <span class="fa fa-pencil grow" data-toggle="tooltip" data-placement="top" title="Editer la ressource"> </span>
+                        </a>
+                        <a href="#"  class="o-js-pub-actions o-js-archive-pub">
+                          <span class="fa fa-archive grow" data-toggle="tooltip" data-placement="top" title="Archiver la ressource"> </span>
+                        </a>
+                        {% endif %}
+                      </h5>
+                      <div class="clearfix"></div>
+                      <a href="{% url 'accounts:overview' resource.user.username %}">
+                        <span class="fa fa-user o-info"> {{resource.user.first_name|title}} {{resource.user.last_name|title}}</span>
+                      </a>
+                      <span class="fa fa-calendar o-info"> {{resource.created_at|date:"M Y"}} </span>
+
+                      <p class="font-weight-normal text-muted">{{resource.description|truncatewords:35}}</p>
+                      <hr>
+                      <h5 class="float-right">
+                        <span class="fa fa-comments o-info"> {{resource.comment_set.count}} </span>
+                      </h5>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+                <div id="description" class="tab-pane fade active show">
+                  {% if request.user == project.created_by and request.resolver_match.kwargs.user == request.user.username %}
+                  <button type="button" class="btn btn-link float-md-right" id="js-edit-project-data">
+                    <span class="fa fa-pencil" style="color:#007bff !important"></span>
+                    <span class="text-primary">Modifier</span>
+                  </button>
+                  <div class="clearfix"></div>
+                  {% endif %}
+                  <form method="post" id="js-edit-project-form" novalidate>
+                    {% csrf_token %}
+                    {% include 'portal/includes/_form-header.html' with form=project_form %}
+
+
+                    {% include 'portal/includes/_form-field.html' with field=project_form.title  disable='true' %}
+                    {% include 'portal/includes/_form-field.html' with field=project_form.description  disable='false' %}
+                    {% include 'portal/includes/_form-field.html' with field=project_form.objective  disable='false' %}
+
+                    {% for form in objective_formset.forms %}
+                    {% for field in form.visible_fields %}
+                    {% include 'portal/includes/_form-field.html' with field=field %}
+                    {% endfor %}
+                    {% endfor %}
+
+
+                    {% include 'portal/includes/_form-field.html' with field=project_form.duration  disable='true' %}
+
+                    <div class="md-form">
+                      <input class="form-control" type="text" id="search" placeholder="Ajouter des membres" aria-label="Search">
+                    </div>
+                    <table class="table table-borderless" id="table">
+                      <tbody class="search-members">
+
+                      {% for name, field in project_form.fields.items %}
+                      {% ifequal name 'members' %}
+                      {% for member in field.queryset %}
+                      {% if member != request.user and member.username != 'superuser' %}
+                      <tr>
+                        <td>
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="id_members_{{forloop.counter0}}" value="{{member.pk}}" name="{{name}}" {% if member.pk in members_ids %}checked{% endif %} disabled>
+                            <label class="custom-control-label" for="id_members_{{forloop.counter0}}">{{member.get_full_name}}</label>
+                          </div>
+                        </td>
+                      </tr>
+                      {% endif %}
+                      {% endfor %}
+
+                      {% endifequal %}
+
+                      {% endfor %}
+                      </tbody>
+                    </table>
+
+                    <div class="row float-right">
+                    {% if request.user == project.created_by and request.resolver_match.kwargs.user == request.user.username %}
+
+                      <button type="button" class="btn btn-link" data-dismiss="modal"><span class="text-danger">Cancel</span></button>
+                      <button type="submit" class="btn btn-primary" id="js-edit-project-submit" disabled>Valider</button>
+                      {% else %}
+                      <button type="button" class="btn btn-link" data-dismiss="modal"><span class="text-danger">Fermer</span></button>
+
+                      {% endif %}
+                    </div>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,115 @@
+<div class="modal fade" id="new-resource-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nouvelle Ressource</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form method="post" class="main-form needs-validation" id="new-resource-form" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+          {% include 'portal/includes/_form-header.html' with form=form %}
+
+          {% include 'portal/includes/_form-field.html' with field=form.title disable='false' %}
+          {% include 'portal/includes/_form-field.html' with field=form.project disable='false' %}
+
+          {% include 'portal/includes/_form-field.html' with field=form.source disable='false' %}
+          {% include 'portal/includes/_form-field.html' with field=form.source_url disable='false' %}
+
+          <div class="custom-control custom-radio" style="display:inline;color:#757575;">
+            <input type="radio" class="custom-control-input" id="source-pdf" name="source-radio" value="source-pdf" checked>
+            <label class="custom-control-label" for="source-pdf">PDF</label>
+          </div>
+          <div class="custom-control custom-radio" style="display:inline;color:#757575">
+            <input type="radio" class="custom-control-input" id="source-url" value="source-url" name="source-radio" style="height:2px;width:2px">
+            <label class="custom-control-label" for="source-url">URL</label>
+          </div>
+
+          {% include 'portal/includes/_form-field.html' with field=form.content disable='false'%}
+          {% include 'portal/includes/_form-field.html' with field=form.tags disable='false'%}
+
+          <div id="accordion" class="accordion">
+            <div class="card">
+              <div class="card-header o-bg-primary" id="headingOne">
+                <h5 class="mb-0">
+                  <button type="button" class="btn btn-link text-white" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Informations de Base
+                  </button>
+                </h5>
+              </div>
+
+              <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+                <div class="card-body">
+                  {% include 'portal/includes/_form-field.html' with field=form.description disable='false'%}
+
+                  <div class="row">
+                    <div class="col-6">
+                      {% include 'portal/includes/_form-field.html' with field=form.subject disable='false'%}
+                    </div>
+                    <div class="col-6">
+                      {% include 'portal/includes/_form-field.html' with field=form.creator disable='false'%}
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-3">
+                      {% include 'portal/includes/_form-field.html' with field=form.language disable='false'%}
+                    </div>
+                    <div class="col-3">
+                      {% include 'portal/includes/_form-field.html' with field=form.format disable='false'%}
+                    </div>
+                    <div class="col-3">
+                      {% include 'portal/includes/_form-field.html' with field=form.date disable='false'%}
+                    </div>
+                    <div class="col-3">
+                      {% include 'portal/includes/_form-field.html' with field=form.type disable='false'%}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+
+            <div class="card">
+              <div class="card-header o-bg-primary" id="headingThree">
+                <h5 class="mb-0">
+                  <button type="button" class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
+                          aria-controls="collapseThree">
+                    Informations Détaillées
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-6">
+                      {% include 'portal/includes/_form-field.html' with field=form.contributor disable='false'%}
+                    </div>
+                    <div class="col-6">
+                      {% include 'portal/includes/_form-field.html' with field=form.publisher disable='false'%}
+                    </div>
+                  </div>
+
+                  {% include 'portal/includes/_form-field.html' with field=form.identifier disable='false'%}
+                  {% include 'portal/includes/_form-field.html' with field=form.relation disable='false'%}
+                  {% include 'portal/includes/_form-field.html' with field=form.coverage disable='false'%}
+                  {% include 'portal/includes/_form-field.html' with field=form.rights disable='false'%}
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="float-md-right">
+            <button type="button" class="btn btn-link" data-dismiss="modal"><span class="text-danger">Cancel</span> </button>
+            <button type="submit" id="btnSubmit" class="btn btn-primary" >Partager</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

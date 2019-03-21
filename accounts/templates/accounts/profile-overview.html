@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Profile overview {% endblock title %}
+{% block css_extras %}
+<link rel="stylesheet" href="{% static 'portal/css/fab.css' %}">
+{% endblock css_extras %}
+{% block sidebar %}
+{% include 'accounts/includes/_profile-sidebar.html' %}
+{% endblock sidebar %}
+
+{% block content %}
+
+{% include 'portal/includes/archive-pub-modal.html' %}
+{% include 'projects/archive-project-modal.html' %}
+<div class="row justify-content-center">
+
+  <section class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <ul id="tabsJustified" class="nav nav-tabs">
+          <li class="nav-item"><a href="" data-target="#about" data-toggle="tab" class="nav-link  text-uppercase active">A Propos</a></li>
+          <li class="nav-item"><a href="" data-target="#resources" data-toggle="tab" class="nav-link  text-uppercase">ressources</a></li>
+          {% if request.resolver_match.kwargs.username == request.user.username %}
+          <li class="nav-item"><a href="" data-target="#projects" data-toggle="tab" class="nav-link text-uppercase">Projets</a></li>
+          {% endif %}
+        </ul>
+        <br>
+        <div id="tabsJustifiedContent" class="tab-content">
+          <div id="about" class="tab-pane fade active show">
+            {% comment %}
+            <div class="row">
+                <div class="card">
+                  <div class="card-body">
+                    <h3>Membres</h3>
+                    <div class="md-form">
+                      <input class="form-control" type="text" id="search" placeholder="Rechercher des membres" aria-label="Search">
+                    </div>
+                </div>
+                    <table class="table table-borderless" id="table">
+                      <tbody>
+                      <tr>
+                        <td>
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+                            <label class="custom-control-label" for="defaultUnchecked">Oussama Heloulou</label>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="id1">
+                          <label class="custom-control-label" for="id1">Houssem Heloulou</label>
+                        </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="id2">
+                            <label class="custom-control-label" for="id2">Mouad chelouche</label>
+                          </div>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+              </div>
+            </div>
+            {% endcomment %}
+
+            <div class="col-md-8">
+              <p>
+                <strong>Nom et Prénom</strong>
+              </p>
+              <p>
+                {{ user.first_name }} {{ user.last_name|upper }}
+              </p>
+
+              <p>
+                <strong>Nom d'utilisateur</strong>
+              </p>
+
+              <p>
+                {{user.username}}
+              </p>
+
+              <p>
+                <strong>Email</strong>
+              </p>
+
+              <p>
+                {{ user.email }}
+              </p>
+
+              <p>
+                <strong>Bio</strong>
+              </p>
+              <p>{{ user.bio }}</p>
+            </div>
+          </div>
+          <div id="resources" class="tab-pane fade">
+            {% if request.resolver_match.kwargs.username == request.user.username %}
+            {% include 'portal/includes/_fab.html' %}
+            {% include 'portal/_resource-sharing-modal.html' with form=form %}
+            {% endif %}
+
+            {% for resource in resources %}
+              {% include 'accounts/includes/_resource-card.html' with resource=resource %}
+            {% endfor %}
+          </div>
+          {% if request.resolver_match.kwargs.username == request.user.username %}
+          <div id="projects" class="tab-pane fade">
+            {% if request.resolver_match.kwargs.username == request.user.username %}
+            {% include 'projects/includes/_fab.html' %}
+            {% include 'projects/includes/_project-creation-modal.html' %}
+            {% endif %}
+
+            {% for project in projects %}
+              {% include 'projects/includes/_project-card.html' with project=project %}
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock content %}
+
+{% block javascript_extras %}
+<script src="{% static 'portal/js/fab.js' %}"></script>
+<script src="{% static 'js/lib/jquery.searchable.js' %}"></script>
+<script>
+  $( '#table' ).searchable({
+        searchType: 'default',
+        selector: 'tbody tr'
+    });
+
+</script>
+{% endblock javascript_extras %}

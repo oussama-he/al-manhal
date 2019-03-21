@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Groups Management {% endblock title %}
+
+{% block css_extras %}
+<link rel="stylesheet" href="{% static 'portal/css/main.css' %}">
+<link rel="stylesheet" href="{% static 'portal/css/fab.css' %}">
+{% endblock css_extras %}
+
+{% block sidebar %}
+  {% include 'accounts/_profile-sidebar.html' %}
+{% endblock sidebar %}
+
+
+
+<div class="row">
+  <div class="col-md-8 mx-auto mb-4">
+
+    <h2>Mes Projets</h2>
+    <table class="table table-borderless table-hover">
+      <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>
+          <h4>Datawarehouse</h4>
+          <i class="fa fa-user"></i> Admin
+        </td>
+        <td>
+          <h6>
+            <a href="#">2 Membres</a>
+          </h6>
+          <h6>
+            <a href="#">4 Demandes</a>
+          </h6>
+        </td>
+        <td>
+          <h6>
+          </h6>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>
+          <h4>Data Mining</h4>
+          <i class="fa fa-user"></i> Admin
+        </td>
+        <td>
+          <h6>
+            <a href="#">2 Membres</a>
+          </h6>
+          <h6>
+            <a href="#">4 Demandes</a>
+          </h6>
+        </td>
+        <td>
+          <h6>
+          </h6>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>
+          <h4>Gestion de Projets</h4>
+        </td>
+        <td>
+          <h6>
+            <a href="#">2 Membres</a>
+          </h6>
+        </td>
+        <td>
+          <h6>
+          </h6>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <table class="table">
+      <thead class="thead-inverse o-bg-primary">
+      <tr>
+        <th><h5>Projet</h5></th>
+        <th><h5>Membres</h5></th>
+        <th><h5>Publications</h5></th>
+        <th><h5>Projet</h5></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>
+          <h5>
+            Datawarehouse <i class="fa fa-user"></i>
+            <small class="text-muted d-block">description de group</small>
+          </h5>
+        </td>
+        <td class="align-middle">0</td>
+        <td class="align-middle">0</td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>
+          group
+          <small class="text-muted d-block">description de group
+          </small>
+        </td>
+        <td class="align-middle">0</td>
+        <td class="align-middle">0</td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>
+          group
+          <small class="text-muted d-block">description de group
+          </small>
+        </td>
+        <td class="align-middle">0</td>
+        <td class="align-middle">0</td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>
+          group
+          <small class="text-muted d-block">description de group
+          </small>
+        </td>
+        <td class="align-middle">0</td>
+        <td class="align-middle">0</td>
+        <td></td>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+{% block content %}
+{% include 'projects/includes/_project-creation-modal.html' %}
+{% include 'projects/includes/_fab.html' %}
+
+<section class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Projects</a></li>
+        </ol>
+      </nav>
+
+      <ul id="tabsJustified" class="nav nav-tabs">
+        <li class="nav-item"><a href="" data-target="#description" data-toggle="tab" class="nav-link small text-uppercase active">Mes Projets</a></li>
+        <li class="nav-item"><a href="" data-target="#publications" data-toggle="tab" class="nav-link small text-uppercase">Projets Archives</a></li>
+      </ul>
+      <br>
+      <div id="tabsJustifiedContent" class="tab-content">
+        <div id="description" class="tab-pane fade active show">
+          <table class="table table-hover">
+  <thead class="thead-inverse o-bg-primary">
+  <tr>
+    <th class="align-middle"><h5>Projet</h5></th>
+    <th class="align-middle"><h5>Membres</h5></th>
+    <th class="align-middle"><h5>Publications</h5></th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for project in projects %}
+  <tr class="clickable-row" data-href="{% url 'projects:project-details' project.id%}">
+    <td>
+      <h5>
+        {{project.title}}
+        <small class="text-muted d-block">{{project.description|truncatewords:10}}</small>
+      </h5>
+    </td>
+    <td class="align-middle">0</td>
+    <td class="align-middle">0</td>
+  </tr>
+  {% endfor %}
+
+  </tbody>
+</table>
+
+        </div>
+
+        <div id="publications" class="tab-pane fade">
+          <!-- here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock content %}
+
+
+{% block javascript_extras %}
+<script src="{% static 'portal/js/main.js' %}"></script>
+<script src="{% static 'portal/js/fab.js' %}"></script>
+{% endblock javascript_extras %}

@@ -1,0 +1,12 @@
+<hr>
+<div class="media">
+  <img class="align-self-start mr-3 rounded-circle" src="{{ comment.user.avatar.url }}" style="width:40px;height:40px">
+  <div class="media-body">
+    <a href="{% url 'accounts:overview' comment.user.username %}">
+      <h6 class="mt-0">
+        <strong>{{ comment.user.first_name|title }} {{ comment.user.last_name|title }}</strong>
+      </h6>
+    </a>
+    <p>{{ comment.content }}</p>
+  </div>
+</div>

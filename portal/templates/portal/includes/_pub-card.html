@@ -1,0 +1,82 @@
+<div class="card" data-pub-id="{{publication.pk}}" data-action-source="timeline">
+  <div class="card-header o-bg-primary">
+    <div class="media float-left">
+      <img class="mr-2 rounded-circle" src="{{ publication.user.avatar.url }}" style="width:45px;height:45px" alt="avatar">
+      <div class="media-body" style="margin:auto">
+        <a  class="text-white" href="{% url 'accounts:overview' publication.user.username %}">
+          {{publication.user.first_name|title}} {{publication.user.last_name|title}}
+        </a>
+      </div>
+    </div>
+    <div class="float-right">
+      <div class="dropdown show">
+        <a class="fa fa-chevron-down text-white" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          {% if publication.user.username == request.user.username %}
+          <a class="dropdown-item o-js-pub-actions o-js-archive-pub" data-toggle="modal" data-pub-id="{{publication.id}}" data-target="#archiveModal" href="{% url 'portal:archive-publication' pub_id=publication.pk %}">
+            <i class="fa fa-archive"></i> Archiver</a>
+          {% endif %}
+          {% if request.user.is_superuser %}
+          <a class="dropdown-item o-js-pub-actions o-js-delete-pub" data-toggle="modal" data-pub-id="{{publication.id}}" data-target="#deleteModal" href="#">
+            <i class="fa fa-trash"></i> Supprimer</a>
+          {% endif %}
+          {% if publication.user.username == request.user.username %}
+          <a class="dropdown-item o-js-show-meta" href="#" data-toggle="modal" data-target="#pubMeta" data-user="{{request.user.username}}">
+            <i class="fa fa-pencil"></i> Modifier
+          </a>
+          {% else %}
+          <a class="dropdown-item o-js-show-meta" href="#" data-toggle="modal" data-target="#pubMeta" data-user="{{request.user.username}}">
+            <i class="fa fa-info-circle"></i> Details
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card content -->
+  <div class="card-body">
+    <div class="o-pub-content">
+      <!-- Title -->
+      <h4 class="card-title">{{ publication.title }}</h4>
+      {% for tag in publication.tags.all %}
+      <span class="badge badge-primary">{{tag}}</span>
+      {% endfor %}
+      <hr>
+      <!-- Text -->
+      <p class="card-text">{{ publication.content|truncatewords:50 }}</p>
+    </div>
+
+    <div class="o-pub-actions">
+      <ul class="list-unstyled list-inline font-small float-right">
+        <li class="list-inline-item card-inline-list-item">
+          <i class="fa fa-clock-o pr-1"></i>{{ publication.created_at|date:"d M Y" }}</li>
+        <li class="list-inline-item card-inline-list-item">
+          <a href="#" class="showComments">
+            <i class="fa fa-comments"></i> {{publication.comment_set.all.count}}
+          </a>
+        </li>
+        <li class="list-inline-item card-inline-list-item">
+          <div class="my-rating {%if request.user == publication.user%}js-inactive{%endif%}" data-pub-id="{{publication.pk}}">
+          </div>
+        </li>
+        <li class="list-inline-item card-inline-list-item">{{publication.get_score}}</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Card footer -->
+  <div class="rounded-bottom">
+    <div class="o-comments">
+      <form action="" method="post" data-pub-id="{{publication.pk}}">
+        {% include 'portal/includes/_form-field.html' with field=comment_form.content %}
+        <button type="submit" class="btn btn-primary o-js-submit-comment" style="font-size: 14px;font-weight: 500;padding: 10px;">Commenter</button>
+      </form>
+      {% for comment in publication.comment_set.all %}
+      {% include 'portal/includes/_pub-comment.html' with comment=comment %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+

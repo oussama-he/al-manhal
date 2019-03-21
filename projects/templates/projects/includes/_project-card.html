@@ -1,0 +1,42 @@
+<div class="card o-js-card-project o-card-hover mb-4" data-project-id="{{project.id}}">
+  <div class="card-body">
+    <a href="{% url 'portal:publications' %}?filter_projects={{project.id}}">
+      <h4 class="card-title float-left">{{project.title}}</h4>
+    </a>
+    <h5 class="float-right">
+      {# if request.user == project.created_by and request.resolver_match.kwargs.username == request.user.username #}
+      {%if request.user == project.created_by %}
+      <a href="#" class="js-configure-project" data-user="{{request.user.username}}">
+        <span class="fa fa-gear grow" data-toggle="tooltip" data-placement="top" title="Modifier les informations"> </span>
+      </a>
+      <a href="#" class="js-archive-project" data-toggle="tooltip" data-placement="top" title="Archiver le projet">
+        <span class="fa fa-archive grow"> </span>
+      </a>
+      {% else %}
+      <a href="#" class="js-configure-project" data-user="{{request.user.username}}">
+        <span class="fa fa-info-circle grow" data-toggle="tooltip" data-placement="top" title="Projet Details"></span>
+      </a>
+      {% endif %}
+
+      {% if request.user.is_superuser %}
+      <a href="#" class="">
+        <span class="fa fa-trash text-danger grow" data-toggle="tooltip" data-placement="top" title="Supprimer le projet"> </span>
+      </a>
+      {% endif %}
+    </h5>
+    <div class="clearfix"></div>
+    <a href="{% url 'accounts:overview' project.created_by %}">
+                <span class="fa fa-user" data-toggle="tooltip" data-placement="top" title="Visiter le profil">
+                  {{project.created_by.first_name}} {{project.created_by.last_name|upper}}
+                </span>
+    </a>
+    <span class="fa fa-calendar" data-toggle="tooltip" data-placement="top" title="Date de Creation"> {{project.created_at|date:"M Y"}} </span>
+    <span class="fa fa-clock-o " data-toggle="tooltip" data-placement="top" title="Durée de Projet"> {{project.duration}} </span>
+    <p class="font-weight-normal text-muted">{{project.description|truncatewords:65}}</p>
+    <hr>
+    <h5 class="float-right">
+      <span class="fa fa-users o-info"> {{project.members.all.count}}</span>
+      <span class="fa fa-bookmark o-info"> {{project.publication_set.count}} </span>
+    </h5>
+  </div>
+</div>

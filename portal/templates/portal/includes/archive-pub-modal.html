@@ -1,0 +1,25 @@
+<div class="modal o-message-modal fade" id="archiveModal">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmer</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form method="post" class="main-form needs-validation">
+          {% csrf_token %}
+          <h5 style="font-weight: 400">Voulez-vous vraiment archiver cette resource?</h5>
+          <div class="float-md-right">
+            <button type="submit" id="archiveBtn" class="btn btn-link"><span class="text-danger">Oui</span></button>
+            <button type="button" class="btn btn-link" data-dismiss="modal"><span class="text-primary">Non</span></button>
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>

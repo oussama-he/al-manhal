@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Testing</title>
+</head>
+<body>
+<form action="." method="get" id="o-js-filterProjects">
+  {{form.as_p}}
+</form>
+
+<ul>
+  {% for pub in pubs %}
+    <li>{{pub.title}}</li>
+  {% endfor %}
+</ul>
+<script src="{% static 'js/lib/jquery-3.2.1.min.js' %}"></script>
+<script>
+  $("#o-js-filterProjects input").click(function(event){
+        event.preventDefault();
+        console.log("input clicked");
+        $("#o-js-filterProjects").submit();
+  });
+</script>
+</body>
+</html>

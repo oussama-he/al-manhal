@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Profile overview {% endblock title %}
+
+{% block sidebar %}
+{% include 'accounts/_profile-sidebar.html' %}
+{% endblock sidebar %}
+
+
+{% block content %}
+<section class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Projets</a></li>
+          <li class="breadcrumb-item active" aria-current="page"></li>
+        </ol>
+      </nav>
+
+      <ul id="tabsJustified" class="nav nav-tabs">
+        <li class="nav-item"><a href="" data-target="#description" data-toggle="tab" class="nav-link  text-uppercase active">Description</a></li>
+        <li class="nav-item"><a href="" data-target="#publications" data-toggle="tab" class="nav-link  text-uppercase">Ressources</a></li>
+        <li class="nav-item"><a href="" data-target="#users" data-toggle="tab" class="nav-link  text-uppercase">Membres</a></li>
+      </ul>
+      <br>
+      <div id="tabsJustifiedContent" class="tab-content">
+        <div id="users" class="tab-pane fade">
+          {% for user in users %}
+          <div class="card o-card-hover mb-4" data-href="{% url 'accounts:overview' user.username %}">
+            <div class="card-body">
+              <h4 class="card-title float-left">{{user.first_name}} {{user.last_name|upper}}</h4>
+              <h5 class="float-right">
+                <a href="#">
+                  <span class="fa fa-ban text-danger grow" data-toggle="tooltip" data-placement="top" title="Blocker"> </span>
+                </a>
+              </h5>
+              <br><br>
+              <span class="fa fa-calendar" data-toggle="tooltip" data-placement="top" title=""> {{user.date_joined|date:"M Y"}} </span>
+
+              <p class="font-weight-normal text-muted">{{user.bio}}</p>
+              <hr>
+              <h5 class="float-right">
+                <span class="fa fa-bookmark"> 12 </span>
+                <span class="fa fa-comments"> 15</span>
+              </h5>
+            </div>
+          </div>
+          {% endfor %}
+
+
+
+        </div>
+
+        <div id="publications" class="tab-pane fade">
+          <br>
+          <table class="table table-hover">
+            <thead class="thead-inverse o-bg-primary">
+            <tr>
+              <th><h5>Publication</h5></th>
+              <th><h5>Member</h5></th>
+              <th><h5>Date</h5></th>
+              <th><h5>Action</h5></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for pub in publications %}
+            <tr>
+              <td class="align-middle">
+                <h5>
+                  {{pub.title}}
+                  <small class="text-muted d-block">{{pub.content|truncatewords:10}}</small>
+                </h5>
+              </td>
+              <td class="align-middle"><a href="{% url 'accounts:overview' pub.user.username %}">{{pub.user.username}}</a></td>
+              <td class="align-middle">{{pub.created_at}}</td>
+              <td class="align-middle"><button class="btn btn-danger"><i class="fa fa-archive"> Archive</i></button> </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div id="description" class="tab-pane fade active show">
+          <form method="post" action="." id="o-js-project-form" novalidate>
+            {% csrf_token %}
+            {% include 'portal/includes/_form-header.html' with form=project_form %}
+            {{ objective_formset.management_form }}
+
+            <div class="o-js-objective-formset-hidden-field">
+              {% for form in objective_formset.forms %}
+              {% for field in form.hidden_fields %}
+              {{field}}
+              {% endfor %}
+              {% endfor %}
+            </div>
+
+            {% include 'portal/includes/_form-field.html' with field=project_form.title %}
+            {% include 'portal/includes/_form-field.html' with field=project_form.description %}
+            {% include 'portal/includes/_form-field.html' with field=project_form.objective %}
+
+            {% for form in objective_formset.forms %}
+            {% for field in form.visible_fields %}
+            {% include 'portal/includes/_form-field.html' with field=field %}
+            {% endfor %}
+            {% endfor %}
+            {% include 'portal/includes/_form-field.html' with field=project_form.duration %}
+
+
+
+            <div class="row">
+              <div class="float-right">
+                <button class="btn btn-primary">Sauvegarder les Modification</button>
+              </div>
+
+              <br>
+              <br>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock content %}
+
+{% block javascript_extras %}
+
+<script src="{% static 'portal/js/main.js' %}"></script>
+<script src="{% static 'projects/js/projects.js' %}"></script>
+<script>
+      $("#newField").on('click', function (event) {
+        var lastDiv = $("#newField").prev("div.md-form");
+       cloneMore(lastDiv, 'secondaryobjective_set');
+
+       /*
+       // alert("you clicked add new field");
+        event.preventDefault();
+        var formGroup = $("<div class='md-form'></div>");
+        var label = $("<label>Objectif</label>")
+        var input = $("<input type='text' class='form-control'>")
+        formGroup.append(input)
+        formGroup.append(label)
+        console.log($(this).parent()[0])
+        // $("#demoForm").before(formGroup)
+        $(this).before(formGroup)*/
+      })
+      /*
+      $('a').click(function (event) {
+        event.preventDefault()
+        $(this).parent().parent().parent().remove()
+      })*/
+
+      function cloneMore(selector, type) {
+        var newElement = $(selector).clone(true);
+        var total = $('#id_' + type + '-TOTAL_FORMS').val();
+        newElement.find('input').each(function(index, element) {
+          if (index == 0) {
+            var name = $(element).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
+            var id = 'id_' + name;
+            $(element).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+            var hiddenElement = $(element).clone(true);
+            hiddenElement.prop("type", "hidden");
+            $(".o-js-objective-formset-hidden-field").append(hiddenElement);
+
+          }
+      });
+        newElement.find('label').each(function(index, element) {
+        if (index == 0) {
+          var newFor = $(element).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
+          $(this).attr('for', newFor);
+        }
+    });
+    total++;
+    $('#id_' + type + '-TOTAL_FORMS').val(total);
+    $(selector).after(newElement);
+}
+    </script>
+<script>
+    var django = django || {};
+    django.jQuery = $;
+</script>
+{{ project_form.media }}
+
+<script src="/admin/jsi18n"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+{% endblock javascript_extras %}
